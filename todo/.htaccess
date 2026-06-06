@@ -1,0 +1,9 @@
+Options -Indexes
+
+# Block direct access to internal PHP files (NOT generate_hash — that's run manually once)
+<FilesMatch "^(db|auth|config)\.php$">
+  Require all denied
+  <IfModule !mod_authz_core.c>
+    Deny from all
+  </IfModule>
+</FilesMatch>
