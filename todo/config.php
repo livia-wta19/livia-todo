@@ -10,4 +10,6 @@ define('AUTH_PASS_HASH', 'REPLACE_WITH_HASH');
 // ──────────────────────────────────────────────────────────────────────────
 
 define('SESSION_NAME', 'aitodo_sess');
-define('DB_PATH', __DIR__ . '/data/todo.sqlite');
+// Na Railway: mountuj Volume na /data (Settings → Volumes → Mount Path: /data)
+// Lokálne (php -S): cesta todo/data/todo.sqlite
+define('DB_PATH', getenv('RAILWAY_ENVIRONMENT') ? '/data/todo.sqlite' : __DIR__ . '/data/todo.sqlite');

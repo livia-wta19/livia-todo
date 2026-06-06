@@ -1,23 +1,14 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# PDO SQLite + mod_rewrite
 RUN apt-get update && apt-get install -y libsqlite3-dev && \
-    docker-php-ext-install pdo pdo_sqlite && a2enmod rewrite
+    docker-php-ext-install pdo pdo_sqlite && \
+    rm -rf /var/lib/apt/lists/*
 
-# AllowOverride All — potrebné pre .htaccess
-RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
+COPY todo/ /app/
 
-# Skopíruj appku
-COPY todo/ /var/www/html/todo/
+# Data dir outside web root (mountuj ako Railway Volume na /data)
+RUN mkdir -p /data && chmod 777 /data
 
-# Vytvor data/ priečinok a nastav oprávnenia
-RUN mkdir -p /var/www/html/todo/data && \
-    chown -R www-data:www-data /var/www/html/todo && \
-    chmod 777 /var/www/html/todo/data
-
-# Startup skript — Railway injektuje $PORT
-COPY apache-start.sh /usr/local/bin/apache-start.sh
-RUN sed -i 's/\r//' /usr/local/bin/apache-start.sh && chmod +x /usr/local/bin/apache-start.sh
-
-EXPOSE 80
-CMD ["/usr/local/bin/apache-start.sh"]
+WORKDIR /app
+EXPOSE 8080
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /app"]
