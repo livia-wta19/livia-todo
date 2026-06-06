@@ -1,7 +1,8 @@
 FROM php:8.2-apache
 
 # PDO SQLite + mod_rewrite
-RUN docker-php-ext-install pdo pdo_sqlite && a2enmod rewrite
+RUN apt-get update && apt-get install -y libsqlite3-dev && \
+    docker-php-ext-install pdo pdo_sqlite && a2enmod rewrite
 
 # AllowOverride All — potrebné pre .htaccess
 RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
