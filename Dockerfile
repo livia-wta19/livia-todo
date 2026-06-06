@@ -16,7 +16,7 @@ RUN mkdir -p /var/www/html/todo/data && \
 
 # Startup skript — Railway injektuje $PORT
 COPY apache-start.sh /usr/local/bin/apache-start.sh
-RUN chmod +x /usr/local/bin/apache-start.sh
+RUN sed -i 's/\r//' /usr/local/bin/apache-start.sh && chmod +x /usr/local/bin/apache-start.sh
 
 EXPOSE 80
 CMD ["/usr/local/bin/apache-start.sh"]
