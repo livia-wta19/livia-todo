@@ -2,7 +2,7 @@
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/db.php';
 
-require_login();
+start_session();
 
 $pdo   = db();
 $token = csrf_token();
@@ -32,10 +32,6 @@ function e(string $s): string {
 
 <header class="topbar">
   <span class="logo"><span class="logo-ai">AI</span><span class="logo-name"> TODO</span></span>
-  <nav class="topbar-nav">
-    <span class="topbar-user">// <?= e(AUTH_USER) ?></span>
-    <a href="logout.php" class="topbar-logout">Odhlásiť</a>
-  </nav>
 </header>
 
 <main class="app-wrap">
